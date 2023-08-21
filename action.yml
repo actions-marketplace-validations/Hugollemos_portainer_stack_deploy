@@ -19,5 +19,5 @@ outputs:
 runs:
   using: "composite"
   steps:
-    - run: ${{ github.action_path }}/test/script.sh
+    - run: ${{ github.action_path }}/test/goodbye.sh
       shell: bash
