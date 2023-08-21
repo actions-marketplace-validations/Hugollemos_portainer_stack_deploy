@@ -3,11 +3,11 @@ description: 'Greet someone'
 inputs:
   url:  
     description: 'url'
-    required: true
+    required: false
 
   token:  
     description: 'token'
-    required: true
+    required: false
 
   stack:  
     description: 'stack'
