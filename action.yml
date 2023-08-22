@@ -12,6 +12,11 @@ inputs:
   stack:  
     description: 'stack'
     required: true
+
+  name:  
+    description: 'name'
+    required: true
+
 outputs:
   random-number:
     description: "saida do deploy"
