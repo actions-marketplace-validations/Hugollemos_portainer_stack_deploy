@@ -1,8 +1,8 @@
 #!/bin/bash
-URL=$API_URL
-API_KEY=$API_KEY
-FILE_PATH=$stack
-name=$name
+URL="$API_URL"
+API_KEY="$API_KEY"
+FILE_PATH="$stack"
+name="$name"
 
 # Faz a solicitação GET e armazena a resposta em uma variável
 response=$(curl -s -X GET "$URL" -H "X-API-Key: $API_KEY" --insecure)
@@ -32,7 +32,7 @@ if echo "$response" | jq -e '.[] | select(.Name == "'"$name"'")' > /dev/null; th
   -F "method=file" \
   -F "file=@$FILE_PATH" \
   -F "endpointId=2" \
-  -F "Name="$name" 
+  -F "Name=$name"
 
   echo "Stack deletada. ID: $id"
   echo "stop 6 sec"
@@ -45,7 +45,7 @@ if echo "$response" | jq -e '.[] | select(.Name == "'"$name"'")' > /dev/null; th
   -F "method=file" \
   -F "file=@$FILE_PATH" \
   -F "endpointId=2" \
-  -F "Name="$name" )
+  -F "Name=$name" )
 
   # Imprimir a resposta da requisição 
   echo "Resposta da solicitação POST: $response"
@@ -65,7 +65,7 @@ else
   -F "method=file" \
   -F "file=@$FILE_PATH" \
   -F "endpointId=2" \
-  -F "Name="$name" )
+  -F "Name=$name" )
 
   # Imprimir a resposta da requisição 
   echo "Resposta da solicitação POST: $response"
