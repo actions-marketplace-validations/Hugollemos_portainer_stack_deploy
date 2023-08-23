@@ -1,22 +1,12 @@
 name: 'Hello World'
 description: 'Greet someone'
 inputs:
-  url:  
-    description: 'url'
-    required: false
-
-  token:  
-    description: 'token'
-    required: false
-
-  stack:  
-    description: 'stack'
-    required: true
-
   name:  
     description: 'name'
     required: true
-
+  stack:  
+    description: 'stack'
+    required: true
 outputs:
   random-number:
     description: "saida do deploy"
