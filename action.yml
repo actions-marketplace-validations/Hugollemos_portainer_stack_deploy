@@ -1,5 +1,5 @@
 name: 'Action to deploy stacks to portainer'
-description: ''
+description: 'Action to deploy stacks to portainer'
 outputs:
   saida:
     description: "success in deploy"
