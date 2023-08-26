@@ -27,7 +27,7 @@ GitHub Action for deploy to portainer.
           API_URL: ${{ secrets.API_URL }}
           API_KEY: ${{ secrets.API_KEY }}
           FILE_PATH: "./docker-compose.yml"
-          STACK_NAME: nome da sua stack
+          STACK_NAME: name_stack
 ```
 ## License
 [MIT](https://github.com/Hugollemos/portainer_stack_deploy/blob/main/LICENSE)
