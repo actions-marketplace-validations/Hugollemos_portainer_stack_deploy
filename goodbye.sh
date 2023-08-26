@@ -1,5 +1,9 @@
 #!/bin/bash
+URL=$API_URL
+API_KEY=$API_KEY
+STACK_NAME=$STACK_NAME
 
+FILE_PATH="stack-portainer.yml"
 # Faz a solicitação GET e armazena a resposta em uma variável
 response=$(curl -s -X GET "$URL" -H "X-API-Key: $API_KEY" --insecure)
 
