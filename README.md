@@ -30,3 +30,4 @@ GitHub Action for deploy to portainer.
           STACK_NAME: nome da sua stack
 ```
 ## License
+[MIT](https://github.com/Hugollemos/portainer/blob/main/LICENSE)
