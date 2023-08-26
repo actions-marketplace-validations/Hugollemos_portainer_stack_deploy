@@ -22,7 +22,7 @@ GitHub Action for deploy to portainer.
 ```yaml
       -
         name: deploy
-        uses: Hugollemos/portainer@v1
+        uses: Hugollemos/portainer_stack_deploy@v1
         env:
           API_URL: ${{ secrets.API_URL }}
           API_KEY: ${{ secrets.API_KEY }}
@@ -30,4 +30,4 @@ GitHub Action for deploy to portainer.
           STACK_NAME: nome da sua stack
 ```
 ## License
-[MIT](https://github.com/Hugollemos/portainer/blob/main/LICENSE)
+[MIT](https://github.com/Hugollemos/portainer_stack_deploy/blob/main/LICENSE)
