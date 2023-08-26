@@ -9,12 +9,12 @@ GitHub Action for deploy to portainer.
 - FILE_PATH 
 - STACK_NAME
 
-| Name           | Description                                   | Required when           | 
+| Name           | Description                                   | Exemple           | 
 |----------------|-----------------------------------------------|-------------------------|
-| `API_URL`     | url                                      | Username-password auth  |
-| `API_KEY`     | token do portainer                                      | Username-password auth  |
-| `FILE_PATH`   | caminho do arquivo                      | Client certificate auth |
-| `STACK_NAME` | nome da stack | Optional                |
+| `API_URL`     | URL do endpoint                                      | http://endpoint/api/stacks"  |
+| `API_KEY`     | token do portainer                                      | avc_9d76asd978a6sd9asdadakljsdgaksdgasasd=  |
+| `FILE_PATH`   | file path                      | './docker-compose.yml' |
+| `STACK_NAME` | stack name | front                |
 
 
 ## como usar
