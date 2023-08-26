@@ -1,23 +1,19 @@
 #!/bin/bash
-URL="$API_URL"
-API_KEY="$API_KEY"
-FILE_PATH="$stack"
-name="$name"
 
 # Faz a solicitação GET e armazena a resposta em uma variável
 response=$(curl -s -X GET "$URL" -H "X-API-Key: $API_KEY" --insecure)
 
-# Verifica se a stack está criada
-if echo "$response" | jq -e '.[] | select(.Name == "'"$name"'")' > /dev/null; then
+# Verifica se a stack com o nome ""'"$STACK_NAME"'"" está criada
+if echo "$response" | jq -e '.[] | select(.Name == "'"$STACK_NAME"'")' > /dev/null; then
 
   # Extrai o valor do campo "Name" usando jq
-  name=$(echo "$response" | jq -r '.[] | select(.Name == "'"$name"'") | .Name')
+  name=$(echo "$response" | jq -r '.[] | select(.Name == "'"$STACK_NAME"'") | .Name')
 
   # Imprime o nome da stack
-  echo "A Stack chamada $name está criada."
+  echo "A Stack chamada $name está criada. Nome: $name"
 
   # Obtém o ID da stack
-  id=$(echo "$response" | jq -r '.[] | select(.Name == "'"$name"'") | .Id')
+  id=$(echo "$response" | jq -r '.[] | select(.Name == "'"$STACK_NAME"'") | .Id')
   
   # Imprime o ID da stack
   echo "Obtendo ID da stack: $id"
@@ -32,11 +28,11 @@ if echo "$response" | jq -e '.[] | select(.Name == "'"$name"'")' > /dev/null; th
   -F "method=file" \
   -F "file=@$FILE_PATH" \
   -F "endpointId=2" \
-  -F "Name=$name"
+  -F "Name="'"$STACK_NAME"'"" 
 
   echo "Stack deletada. ID: $id"
-  echo "stop 6 sec"
-  sleep 6
+  echo "stop 10 sec"
+  sleep 10
   echo "CRIANDO A STACK $name"
 
   response=$(curl -s -X POST "$URL" \
@@ -45,7 +41,7 @@ if echo "$response" | jq -e '.[] | select(.Name == "'"$name"'")' > /dev/null; th
   -F "method=file" \
   -F "file=@$FILE_PATH" \
   -F "endpointId=2" \
-  -F "Name=$name" )
+  -F "Name="'"$STACK_NAME"'"" )
 
   # Imprimir a resposta da requisição 
   echo "Resposta da solicitação POST: $response"
@@ -65,7 +61,7 @@ else
   -F "method=file" \
   -F "file=@$FILE_PATH" \
   -F "endpointId=2" \
-  -F "Name=$name" )
+  -F "Name="'"$STACK_NAME"'"" )
 
   # Imprimir a resposta da requisição 
   echo "Resposta da solicitação POST: $response"
