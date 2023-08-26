@@ -3,7 +3,7 @@
 # Faz a solicitação GET e armazena a resposta em uma variável
 response=$(curl -s -X GET "$URL" -H "X-API-Key: $API_KEY" --insecure)
 
-# Verifica se a stack com o nome ""'"$STACK_NAME"'"" está criada
+# Verifica se a stack com o nome $STACK_NAME está criada
 if echo "$response" | jq -e '.[] | select(.Name == "'"$STACK_NAME"'")' > /dev/null; then
 
   # Extrai o valor do campo "Name" usando jq
@@ -28,10 +28,10 @@ if echo "$response" | jq -e '.[] | select(.Name == "'"$STACK_NAME"'")' > /dev/nu
   -F "method=file" \
   -F "file=@$FILE_PATH" \
   -F "endpointId=2" \
-  -F "Name="'"$STACK_NAME"'"" 
+  -F "Name=$STACK_NAME"
 
   echo "Stack deletada. ID: $id"
-  echo "stop 10 sec"
+  echo "Aguardando 10 segundos..."
   sleep 10
   echo "CRIANDO A STACK $name"
 
@@ -41,7 +41,7 @@ if echo "$response" | jq -e '.[] | select(.Name == "'"$STACK_NAME"'")' > /dev/nu
   -F "method=file" \
   -F "file=@$FILE_PATH" \
   -F "endpointId=2" \
-  -F "Name="'"$STACK_NAME"'"" )
+  -F "Name=$STACK_NAME" )
 
   # Imprimir a resposta da requisição 
   echo "Resposta da solicitação POST: $response"
@@ -61,7 +61,7 @@ else
   -F "method=file" \
   -F "file=@$FILE_PATH" \
   -F "endpointId=2" \
-  -F "Name="'"$STACK_NAME"'"" )
+  -F "Name=$STACK_NAME" )
 
   # Imprimir a resposta da requisição 
   echo "Resposta da solicitação POST: $response"
