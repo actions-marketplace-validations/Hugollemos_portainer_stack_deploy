@@ -1,5 +1,9 @@
 name: 'Action to deploy stacks to portainer'
 description: 'Action to deploy stacks to portainer'
+author: Hugo Lemos da Silva
+branding:
+  icon: 'bar-chart-2'
+  color: 'yellow' 
 outputs:
   saida:
     description: "success in deploy"
