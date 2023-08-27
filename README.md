@@ -11,7 +11,7 @@ GitHub Action for deploying to Portainer.
 
 | Name          | Description               | Example                           |
 | ------------- | ------------------------- | --------------------------------- |
-| `API_URL`     | Endpoint URL              | http://endpoint/api/stacks        |
+| `API_URL`     | Endpoint URL  http ou https            | http://endpoint/api/stacks        |
 | `API_KEY`     | Portainer token           | avc_9d76asd978a6sd9asdadakljsdgaksdgasasd= |
 | `FILE_PATH`   | File path                 | "./docker-compose.yml"            |
 | `STACK_NAME`  | Stack name                | front                             |
