@@ -21,7 +21,7 @@ GitHub Action for deploying to Portainer.
 ```yaml
       -
         name: Deploy
-        uses: Hugollemos/portainer_deploy@v1
+        uses: Fix-Pay/portainer_deploy@v1
         env:
           API_URL: ${{ secrets.API_URL }}
           API_KEY: ${{ secrets.API_KEY }}
