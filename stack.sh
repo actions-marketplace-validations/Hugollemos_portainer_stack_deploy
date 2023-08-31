@@ -32,11 +32,11 @@ if echo "$response" | jq -e '.[] | select(.Name == "'"$STACK_NAME"'")' > /dev/nu
   -F "method=file" \
   -F "file=@$FILE_PATH" \
   -F "endpointId=2" \
-  -F "Name=$STACK_NAME"
+  -F "Name=$STACK_NAME" --insecure
 
   echo "Stack deletada. ID: $id"
-  echo "Aguardando 10 segundos..."
-  sleep 10
+  echo "Aguardando 2 segundos..."
+  sleep 2
   echo "CRIANDO A STACK $name"
 
   response=$(curl -s -X POST "$URL" \
@@ -45,7 +45,7 @@ if echo "$response" | jq -e '.[] | select(.Name == "'"$STACK_NAME"'")' > /dev/nu
   -F "method=file" \
   -F "file=@$FILE_PATH" \
   -F "endpointId=2" \
-  -F "Name=$STACK_NAME" )
+  -F "Name=$STACK_NAME" --insecure)
 
   # Imprimir a resposta da requisição 
   echo "Resposta da solicitação POST: $response"
@@ -65,7 +65,7 @@ else
   -F "method=file" \
   -F "file=@$FILE_PATH" \
   -F "endpointId=2" \
-  -F "Name=$STACK_NAME" )
+  -F "Name=$STACK_NAME" --insecure)
 
   # Imprimir a resposta da requisição 
   echo "Resposta da solicitação POST: $response"
