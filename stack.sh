@@ -35,8 +35,8 @@ if echo "$response" | jq -e '.[] | select(.Name == "'"$STACK_NAME"'")' > /dev/nu
   -F "Name=$STACK_NAME" --insecure
 
   echo "Stack deletada. ID: $id"
-  echo "Aguardando 2 segundos..."
-  sleep 2
+  echo "Aguardando 60 segundos..."
+  sleep 60
   echo "CRIANDO A STACK $name"
 
   response=$(curl -s -X POST "$URL" \
