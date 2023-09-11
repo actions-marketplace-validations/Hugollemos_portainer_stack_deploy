@@ -35,7 +35,7 @@ if echo "$response" | jq -e '.[] | select(.Name == "'"$STACK_NAME"'")' > /dev/nu
   -F "Name=$STACK_NAME" --insecure
 
   echo "Stack deletada. ID: $id"
-  echo "Aguardando 60 segundos..."
+  echo "Aguardando 60 segundos...."
   sleep 60
   echo "CRIANDO A STACK $name"
 
