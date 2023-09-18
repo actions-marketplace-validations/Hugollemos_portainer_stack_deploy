@@ -20,13 +20,17 @@ GitHub Action for deploying to Portainer.
 
 ```yaml
       -
-        name: Deploy
+        name: Deploy to portainer
         uses: Fix-Pay/portainer_deploy@v1
         env:
           API_URL: ${{ secrets.API_URL }}
           API_KEY: ${{ secrets.API_KEY }}
-          FILE_PATH: "./docker-compose.yml"
-          STACK_NAME: name_stack
+          FILE_PATH: "./stack-portal-cliente.yml"
+          STACK_NAME: portalclient
+          ENDPOINT: 2
+          CONTAINER_NAME: portalclient   
+          tags: "fixpay/portal-cliente:latest"
+          api_docker: ${{ secrets.api_docker }}
 ```
 ## Features
 "This action creates a stack (docker-compose) in Portainer through the API. To create it, you will need the token created in Portainer, the correct endpoint, the name, and the path of the stack created in the project. The flow continues by sending the mentioned stacks to Portainer in the action. If the stack's name does not exist, it will create the stack. In subsequent times, it will check if it already exists; if yes, it will delete and recreate the stack, also removing the container and updating it.
