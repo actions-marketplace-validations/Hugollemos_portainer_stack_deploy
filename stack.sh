@@ -7,52 +7,61 @@ FILE_PATH=$FILE_PATH
 ENDPOINT=$ENDPOINT
 api_docker=$api_docker
 MANIPULA_CONTAINER=$api_docker/containers
-getsha=$api_docker/images/json
-deleteimagem=$api_docker/images
+GET_IMAGE_SHA=$api_docker/images/json
+DELETE_IMAGE=$api_docker/images
 tags=$tags
 
-# Faz a solicitação GET e armazena a resposta em uma variável
-response=$(curl -s -X GET "$URL" -H "X-API-Key: $API_KEY" --insecure)
+response=$(curl -k -X GET "$URL" -H "X-API-Key: $API_KEY" --insecure)
+  echo "*******************************"
+  echo "fim da chamada do response"
+  echo "*******************************"
+response_get_sha=$(curl -k -X GET "$GET_IMAGE_SHA" -H "X-API-Key: $API_KEY" --insecure)
+  echo "*******************************"
+  echo "fim da chamada do response do response_get_sha"
+  echo "*******************************"
 
-# Obtenha o ID do contêiner com base no nome
-CONTAINER_ID=$(curl -X GET "$MANIPULA_CONTAINER/json" -H "X-Api-Key: $API_KEY" | jq -r '.[] | select(.Names[] | contains("'$CONTAINER_NAME'")) | .Id')
+  # Obtenha o ID do contêiner com base no nome
+  CONTAINER_ID=$(curl -X GET "$MANIPULA_CONTAINER/json" -H "X-Api-Key: $API_KEY" | jq -r '.[] | select(.Names[] | contains("'$CONTAINER_NAME'")) | .Id')
 
-# Obtenha o SHA da imagem com base na tag
-IMAGE_SHA=$(curl -s -X GET "$getsha" -H "X-API-Key: $API_KEY" | jq -r --arg tags "$tags" '.[] | select(.RepoTags[] | contains($tags)) | .Id')
+  echo "*******************************"
+  echo "fim da chamada do CONTAINER_ID" $CONTAINER_ID
+  echo "*******************************"
 
-# Exibe o SHA da imagem
-echo $IMAGE_SHA
+  IMAGE_SHA=$(echo "$response_get_sha" | jq -r '.[] | select(.RepoTags | index("'"$tags"'") // null != null) | .Id')
 
-# Verifica se a stack está criada
-if echo "$response" | jq -e '.[] | select(.Name == "'"$STACK_NAME"'")' > /dev/null; then
+  echo "*******************************"
+  echo "fim da chamada do IMAGEM_SHA" $IMAGE_SHA
+  echo "*******************************"
 
+# Obtém o ID da stack
+  id=$(echo "$response" | jq -r '.[] | select(.Name == "'"$STACK_NAME"'") | .Id')
+# Monta a URL para a exclusão
+  DELETE_URL="$URL/$id"
+   echo "id da stack" $id
   # Extrai o valor do campo "Name" usando jq
   name=$(echo "$response" | jq -r '.[] | select(.Name == "'"$STACK_NAME"'") | .Name')
 
   # Imprime o nome da stack
-  echo "A Stack chamada $name está criada. Nome: $name"
+  echo "A Stack chamada $name está criada."
 
-  # Obtém o ID da stack
-  id=$(echo "$response" | jq -r '.[] | select(.Name == "'"$STACK_NAME"'") | .Id')
+# Verifica se a stack está criada
+if echo "$response" | jq -e '.[] | select(.Name == "'"$STACK_NAME"'")' > /dev/null; then
 
-  # Monta a URL para a exclusão
-  DELETE_URL="$URL/$id"
-  
   # verifica se o container existe. 
   if [ ! -z "$CONTAINER_ID" ]; then
+
     echo "pausando container"
-    curl -X POST "$MANIPULA_CONTAINER/$CONTAINER_NAME/stop" -H "X-API-Key: $API_KEY"
+    curl -k -X POST "$MANIPULA_CONTAINER/$CONTAINER_NAME/stop" -H "X-API-Key: $API_KEY"
     sleep 5
 
     echo "deletando container"
-    curl -X DELETE "$MANIPULA_CONTAINER/$CONTAINER_NAME" -H "X-API-Key: $API_KEY"
+    curl -k -X DELETE "$MANIPULA_CONTAINER/$CONTAINER_NAME" -H "X-API-Key: $API_KEY"
     sleep 5
 
-    # VALIDAR PROCESSO DE EXCLUSAO DA IMAGEM
     echo "deletando imagem"
-    curl -s -X DELETE "$deleteimagem/$IMAGE_SHA" -H "X-API-Key: $API_KEY" --insecure
-    sleep 5
-
+    echo "================"
+    curl -X DELETE "$DELETE_IMAGE/$IMAGE_SHA" -H "X-API-Key: $API_KEY" --insecure
+    sleep 10
     echo "deletando stack"
     curl -X DELETE "$DELETE_URL" \
     -H "X-API-Key: $API_KEY" \
@@ -61,12 +70,12 @@ if echo "$response" | jq -e '.[] | select(.Name == "'"$STACK_NAME"'")' > /dev/nu
     -F "file=@$FILE_PATH" \
     -F "endpointId=$ENDPOINT" \
     -F "Name=$STACK_NAME" --insecure
-    echo "Stack deletada. ID: $id"
+    echo "Stack $STACK_NAME deletada. ID: $id"
 
     echo "=========================================="
     echo "CRIANDO A STACK $name"
     echo "=========================================="
-    response=$(curl -s -X POST "$URL" \
+    response=$(curl -X POST "$URL" \
     -H "X-API-Key: $API_KEY" \
     -F "type=2" \
     -F "method=file" \
@@ -85,8 +94,12 @@ if echo "$response" | jq -e '.[] | select(.Name == "'"$STACK_NAME"'")' > /dev/nu
   else
     echo "stack encontrada, mas container não encontrado"
 
+    echo "deletando container"
+    curl -k -X DELETE "$MANIPULA_CONTAINER/$CONTAINER_NAME" -H "X-API-Key: $API_KEY"
+    sleep 5
+
     echo "deletando imagem"
-    curl -s -X DELETE "$deleteimagem/$IMAGE_SHA" -H "X-API-Key: $API_KEY" --insecure
+    curl -X DELETE "$deleteimagem/$IMAGE_SHA" -H "X-API-Key: $API_KEY" --insecure
     sleep 5
     
     echo "================"
@@ -104,7 +117,7 @@ if echo "$response" | jq -e '.[] | select(.Name == "'"$STACK_NAME"'")' > /dev/nu
     echo "============================"
     echo "CRIANDO A STACK $name"
     echo "============================"
-    response=$(curl -s -X POST "$URL" \
+    response=$(curl -X POST "$URL" \
     -H "X-API-Key: $API_KEY" \
     -F "type=2" \
     -F "method=file" \
@@ -118,15 +131,14 @@ else
   echo "NENHUMA STACK DA APLICAÇÃO ENCONTRADA."
   echo "======================================"
 
-
   # VALIDAR PROCESSO DE EXCLUSAO DA IMAGEM
   echo "deletando imagem"
-    curl -s -X DELETE "$deleteimagem/$IMAGE_SHA" -H "X-API-Key: $API_KEY" --insecure
+    curl -X DELETE "$deleteimagem/$IMAGE_SHA" -H "X-API-Key: $API_KEY" --insecure
     sleep 5
 
   echo "CRIANDO A NOVA STACK"
   echo "===================="
-  response=$(curl -s -X POST "$URL" \
+  response=$(curl -X POST "$URL" \
   -H "X-API-Key: $API_KEY" \
   -F "type=2" \
   -F "method=file" \
