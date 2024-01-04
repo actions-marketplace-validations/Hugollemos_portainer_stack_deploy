@@ -21,7 +21,7 @@ response_get_sha=$(curl -k -X GET "$GET_IMAGE_SHA" -H "X-API-Key: $API_KEY" --in
   echo "*******************************"
 
   # Obtenha o ID do contêiner com base no nome
-  CONTAINER_ID=$(curl -X GET "$MANIPULA_CONTAINER/json" -H "X-Api-Key: $API_KEY" | jq -r '.[] | select(.Names[] | contains("'$CONTAINER_NAME'")) | .Id')
+  CONTAINER_ID=$(curl -k -X GET "$MANIPULA_CONTAINER/json" -H "X-Api-Key: $API_KEY" | jq -r '.[] | select(.Names[] | contains("'$CONTAINER_NAME'")) | .Id')
 
   echo "*******************************"
   echo "fim da chamada do CONTAINER_ID" $CONTAINER_ID
